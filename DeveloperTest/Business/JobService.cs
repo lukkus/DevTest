@@ -21,7 +21,8 @@ namespace DeveloperTest.Business
             {
                 JobId = x.JobId,
                 Engineer = x.Engineer,
-                When = x.When
+                When = x.When,
+                Customer = mapCustomerToCustomerModel(x.Customer)
             }).ToArray();
         }
 
@@ -31,7 +32,8 @@ namespace DeveloperTest.Business
             {
                 JobId = x.JobId,
                 Engineer = x.Engineer,
-                When = x.When
+                When = x.When,
+                Customer = mapCustomerToCustomerModel(x.Customer)
             }).SingleOrDefault();
         }
 
@@ -40,7 +42,8 @@ namespace DeveloperTest.Business
             var addedJob = context.Jobs.Add(new Job
             {
                 Engineer = model.Engineer,
-                When = model.When
+                When = model.When,
+                CustomerId = model.CustomerId
             });
 
             context.SaveChanges();
@@ -49,7 +52,23 @@ namespace DeveloperTest.Business
             {
                 JobId = addedJob.Entity.JobId,
                 Engineer = addedJob.Entity.Engineer,
-                When = addedJob.Entity.When
+                When = addedJob.Entity.When,
+                Customer = mapCustomerToCustomerModel(addedJob.Entity.Customer)
+            };
+        }
+
+        private static CustomerModel mapCustomerToCustomerModel(Customer customer)
+        {
+            if (customer == null)
+            {
+                return new CustomerModel();
+            }
+
+            return new CustomerModel()
+            {
+                CustomerId = customer.CustomerId,
+                Name = customer.Name,
+                Type = customer.Type
             };
         }
     }
